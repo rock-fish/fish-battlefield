@@ -1,0 +1,56 @@
+<!-- HOME -->
+<!doctype html>
+<html>
+  <head>
+    
+    <title>Fish Battlefield</title>
+    <link rel="icon" href ="/images/icon.png">
+    <meta charset='utf-8'>
+    <link rel='stylesheet' type='text/css' href='/css/home/style.css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&family=Quattrocento:wght@400;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+  </head>
+  <body>
+
+    <div id="background">
+      <img src="images/home/fish.svg" class='background-image' id='fish'>
+      <img src="images/home/sword.svg" class='background-image' id='sword'>
+    </div>
+    <img src="images/home/texture.svg" id='texture'>
+
+    <div id="fish-throw"></div>
+
+    <div id="front">
+      <div id="title">
+        welcome to
+        <p id='bold'>fish battlefield</p>
+      </div>
+
+      <div id="description">
+        a card game that very accurately 
+        simulates life in the deep,          
+        dark, ocean
+      </div>
+    </div>
+
+    <div id="game">
+      <div id="username-container">
+        <input id="username" placeholder="username" maxlength=20>
+      </div>
+      
+      <div id="submit-options-container">
+        <div id="join" class="options" onclick="submitUsername('join');">join</div>
+        <div id="create" class="options" onclick="submitUsername('create');">create</div>
+      </div>
+
+      <div id='error'></div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script> const socket = io(); </script>
+    <script src='/js/home/script.js'></script>
+    
+  </body>
+</html>
