@@ -4,16 +4,19 @@ const express = require('express'); //express
 const http = require('http'); //http
 const fs = require('fs'); //file system
 
+
 //constants
 const app = express(); //get express app
 const server = http.createServer(app); //create server
 const io = new socketIO.Server(server); //new socket.io instance
+
 
 app.use(express.static(__dirname + '/public')); //expose public folder
 
 app.get('/', (req, res) => { //route handler that sends a file when user hits root of website
   res.sendFile(__dirname + '/public'); //send home file
 });
+
 
 function randId(n) { //helper function for generating random ids (with length n)
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split(''); //all possible alphanumeric characters for any ID
@@ -22,7 +25,9 @@ function randId(n) { //helper function for generating random ids (with length n)
   return r; //return result
 }
 
+
 let socketsInPlay = []; //sockets who are currently playing
+
 
 io.on('connection', socket => { //on socket connection
   
@@ -40,6 +45,7 @@ io.on('connection', socket => { //on socket connection
 
     socket.join(gameId); //join room
   });
+  
 
   socket.on('getPlayers', (gameId, callback) => { //when user requests for all players in a game
     fs.readFile(`game/${gameId}/data.json`, (err, data) => { //read data file
@@ -48,6 +54,7 @@ io.on('connection', socket => { //on socket connection
       return callback({ failed: false, error: null, players: json.players }); //return players
     });
   });
+  
 
   socket.on('disconnect', () => { //on socket disconnection
     const playerInfo = socketsInPlay.find(p => p.socketId === socket.id); //get info of socket that disconnected
@@ -72,6 +79,7 @@ io.on('connection', socket => { //on socket connection
       io.to(gameId).emit('removePlayer', username); //server tells all clients in game to remove player
     });
   });
+  
 
   socket.on('createGame', (username, callback) => { //on message from client to create a game
 
@@ -90,6 +98,7 @@ io.on('connection', socket => { //on socket connection
       markers: [] //aray of markers
     };
 
+    
     fs.mkdir(`game/${gameId}`, err => { //create directory in game folder for game data
       if (err) callback({ failed: true, error: `Failure creating game folder: ${err}` }); //if error, send response to client
       else { //if there is no error
@@ -101,6 +110,7 @@ io.on('connection', socket => { //on socket connection
     });
   });
 
+  
   socket.on('joinGame', (info, callback) => { //on join request
     const { username, gameId } = info; //get info from client
 
@@ -135,11 +145,13 @@ io.on('connection', socket => { //on socket connection
     });
   });
 
+  
   socket.on('updateMousePos', info => { //on mouse move from a client
     const { gameId, username, pos } = info; //get client info
     socket.broadcast.to(gameId).emit('updateMousePos', { username: username, pos: pos }); //send message to clients in room (except sender) to update that user's mouse position
   });
 
+  
   socket.on('createMarker', info => { //when a client creates a marker
     const { gameId } = info; //get game id
     socket.broadcast.to(gameId).emit('createMarker', info); //emit to other clients to create a marker
@@ -163,6 +175,7 @@ io.on('connection', socket => { //on socket connection
     
   });
 
+  
   socket.on('updateComponentPos', info => { //when client moves component 
     const { gameId } = info; //get game id
     socket.broadcast.to(gameId).emit('updateComponentPos', info) //emit to other clients in game to update component position
@@ -202,6 +215,7 @@ io.on('connection', socket => { //on socket connection
     });
   });
 
+  
   socket.on('getExistingMarkers', (gameId, callback) => { //when client requests already existing markers (only markers!)
     
     fs.readFile(`game/${gameId}/data.json`, (err, data) => { //read game data file
@@ -212,7 +226,7 @@ io.on('connection', socket => { //on socket connection
     
   });
   
-  
+  //new socket messages here
 
   
   
