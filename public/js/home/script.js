@@ -46,7 +46,7 @@ class Fish { //fish
 
 function spawnFish() { //spawning fish function
 
-  burst = Math.random() < .05 ? 25 : 1 //make a small chance to create a burst of fish
+  const burst = Math.random() < .05 ? 25 : 1 //make a small chance to create a burst of fish
 
   if (document.visibilityState === 'visible') { //if document is visible
     for (i in [...Array(burst).keys()]) (new Fish(Math.random() * window.innerWidth)).jump(); //create fish and make it jump
