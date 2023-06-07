@@ -68,8 +68,13 @@ function generateCards(cardsCount) {
         new Card(cardType, files[Math.floor(Math.random() * files.length)]?.replace(".svg", ""))
       );
     }
-
   });
+
+  //shuffle cards
+  for (let i = cards.length - 1; i > 0; i--) { //iterate through cards
+    const j = Math.floor(Math.random() * (i + 1)); //get random element to switch with
+    [cards[i], cards[j]] = [cards[j], cards[i]]; //switch places of current element and selected one
+  }
 
   return cards; //return result
 
