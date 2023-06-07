@@ -26,6 +26,58 @@ function randId(n) { //helper function for generating random ids (with length n)
 }
 
 
+const cardDistribution = { //card distributions
+  water: .4,
+  fish: .1,
+  food: .2,
+  armor: .15,
+  gear: .15
+};
+//helper function for generating cards (returns object)
+function generateCards(cardsCount) {
+
+  let cardCounts = {}; //create card count 
+  Object.keys(cardDistribution).forEach(cardType => { //iterate through card types
+    cardCounts[cardType] = Math.floor(cardsCount * cardDistribution[cardType]); //get number of type cards
+  });  
+
+  class Card { //card object creator
+    constructor(type, name) { //constructor
+      this.type = type; //set card type
+      this.name = name; //get card name
+      this.imgPath = `/images/play/cards/${type}/${name}`; //get image path name
+    }
+
+    flippedOver = true; //if card is hidden and flipped over
+
+    pcX = .419; //get percent x and y positions
+    pcY = .45;
+
+    id = randId(10); //get id of card
+  }
+
+  let result = {}; //result object
+  Object.keys(cardDistribution).forEach(cardType => result[cardType] = []); //create card type properties in reuslt object
+
+  Object.keys(cardDistribution).forEach(cardType => { //iterate through card types
+    
+    const count = cardCounts[cardType]; //get count of type of card
+
+    const files = fs.readdirSync(`${__dirname}/public/images/play/cards/${cardType}`); //get files
+
+    for (let i = 0; i < count; i++) { //add count cards to result card type array
+      result[cardType].push( //push random card 
+        new Card(cardType, files[Math.floor(Math.random() * files.length)]?.replace(".svg", ""))
+      );
+    }
+
+  });
+
+  return result; //return result
+
+}
+
+
 let socketsInPlay = []; //sockets who are currently playing
 
 
