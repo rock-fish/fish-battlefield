@@ -27,10 +27,10 @@ function randId(n) { //helper function for generating random ids (with length n)
 
 
 const cardDistribution = { //card distributions
-  water: .4,
-  fish: .1,
-  food: .2,
-  armor: .15,
+  water: .5,
+  fish: .10,
+  food: .15,
+  armor: .1,
   gear: .15
 };
 //helper function for generating cards (returns object)
@@ -56,24 +56,22 @@ function generateCards(cardsCount) {
     id = randId(10); //get id of card
   }
 
-  let result = {}; //result object
-  Object.keys(cardDistribution).forEach(cardType => result[cardType] = []); //create card type properties in reuslt object
+  let cards = []; //result array
 
   Object.keys(cardDistribution).forEach(cardType => { //iterate through card types
-    
     const count = cardCounts[cardType]; //get count of type of card
 
     const files = fs.readdirSync(`${__dirname}/public/images/play/cards/${cardType}`); //get files
 
     for (let i = 0; i < count; i++) { //add count cards to result card type array
-      result[cardType].push( //push random card 
+      cards.push( //push random card to cards array
         new Card(cardType, files[Math.floor(Math.random() * files.length)]?.replace(".svg", ""))
       );
     }
 
   });
 
-  return result; //return result
+  return cards; //return result
 
 }
 
@@ -137,6 +135,7 @@ io.on('connection', socket => { //on socket connection
 
     const gameId = randId(6); //game id - random string with length 6
     const playerId = randId(10); //player id - custom user id
+    const cards = generateCards(50); //generate cards
 
     const game = { //compile game data
       gameId: gameId, //game id
@@ -146,7 +145,7 @@ io.on('connection', socket => { //on socket connection
         side: 1 //which side of the board the player possesses
                 //1 - top, 2 - right, 3 - bottom, 4 - left
       }],
-      cards: [], //array of cards
+      cards: cards, //array of cards
       markers: [] //aray of markers
     };
 
