@@ -4,7 +4,7 @@ const express = require('express'); //express
 const http = require('http'); //http
 const fs = require('fs'); //file system
 
- 
+
 //constants
 const app = express(); //get express app
 const server = http.createServer(app); //create server
@@ -18,8 +18,8 @@ app.get('/', (req, res) => { //route handler that sends a file when user hits ro
 });
 
 
-function randId(n) { //helper function for generating random ids (with length n)
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split(''); //all possible alphanumeric characters for any ID
+function randId(n, alph = false) { //helper function for generating random ids (with length n, only alphabetical alph)
+  const chars = `ABCDEFGHIJKLMNOPQRSTUVWXYZ${!alph ? 1234567890 : ""}`.split(''); //all possible alphanumeric characters for any ID
   let r = ''; //result variable
   for (let i = 0; i < n; i++) r += chars[Math.floor(Math.random() * chars.length)]; //add chars to result
   return r; //return result
@@ -45,15 +45,15 @@ function generateCards(cardsCount) {
     constructor(type, name) { //constructor
       this.type = type; //set card type
       this.name = name; //get card name
-      this.imgPath = `/images/play/cards/${type}/${name}`; //get image path name
+      this.imgPath = `/images/play/cards/${type}/${name}.svg`; //get image path name
     }
 
     flippedOver = true; //if card is hidden and flipped over
 
-    pcX = .419; //get percent x and y positions
-    pcY = .45;
+    pcX = .4565; //get percent x and y positions
+    pcY = .5;
 
-    id = randId(10); //get id of card
+    id = randId(10, true); //get id of card
   }
 
   let cards = []; //result array
@@ -68,6 +68,11 @@ function generateCards(cardsCount) {
         new Card(cardType, files[Math.floor(Math.random() * files.length)]?.replace(".svg", ""))
       );
     }
+  });
+
+  //add trash
+  fs.readdirSync(`${__dirname}/public/images/play/cards/trash`).forEach(trash => { //iterate through trash cards
+    cards.push(new Card("trash", trash.replace(".svg", ""))); //add trash to cards array
   });
 
   //shuffle cards
@@ -120,7 +125,7 @@ io.on('connection', socket => { //on socket connection
     socketsInPlay.splice(socketsInPlay.indexOf(playerInfo), 1); //remove data from sockets in play array
 
     fs.readFile(`game/${gameId}/data.json`, (err, data) => { //read game data file
-      if (err) return console.log(err); //if error, print error
+      if (err) return console.log("Error reading file while disconnecting player: " + err); //if error, print error
       
       let json = JSON.parse(data); //parse game file data
       
@@ -281,10 +286,39 @@ io.on('connection', socket => { //on socket connection
     });
     
   });
+
+
+  socket.on('getCards', (gameId, callback) => { //when user requests cards
+
+    fs.readFile(`game/${gameId}/data.json`, (err, data) => { //read game data file
+      if (err) console.log("Error retrieving cards: " + err); //log error
+
+      callback(JSON.parse(data).cards); //return cards
+    });
+
+  });
+  
+
+  socket.on('flipCard', info => { //on card flip
+
+    const { gameId, id, flippedOver } = info; //destructure info object
+
+    socket.broadcast.to(gameId).emit("flipCard", { id: id, flippedOver: flippedOver }); //broadcast to other clients to flip over card
+
+    fs.readFile(`game/${gameId}/data.json`, (err, data) => { //read game data file
+      if (err) console.log("Error retrieving cards: " + err); //log error
+
+      let json = JSON.parse(data); //get json
+      const cardIndex = json.cards.indexOf(json.cards.find(card => card.id === id)); //find index of card with card id
+
+      json.cards[cardIndex].flippedOver = flippedOver; //set flipped over status
+
+      fs.writeFile(`game/${gameId}/data.json`, JSON.stringify(json), console.log); //update file
+    });
+    
+  });
   
   //new socket messages here
-
-  
   
 });
 
