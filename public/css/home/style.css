@@ -1,0 +1,138 @@
+body {
+  overflow: hidden;
+}
+
+#front { 
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+}
+#front * { 
+  text-align: center;
+  white-space: nowrap;
+}
+#title {
+  font-size: 65px;
+  line-height: 0px;
+  font-family: prompt;
+}
+#bold {
+  font-family: Quattrocento;
+  color: #FFA825;
+  letter-spacing: 20px;
+  font-weight: bold;
+  font-size: 75px;
+
+  animation-name: title;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes title {
+  from { letter-spacing: 5px; }
+  to { letter-spacing: 30px; }
+}
+#description {
+  font-family: Roboto Mono;
+  color: #606060;
+  font-size: 20px;
+}
+
+#background {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.background-image {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  animation: bg 10s ease-in-out 0s infinite;
+}
+#fish { animation-direction: alternate; }
+#sword { animation-direction: alternate-reverse; }
+@keyframes bg {
+  from { transform: translate(-50%, -47%); }
+  to { transform: translate(-50%, -53%); }
+}
+
+#texture {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+#game {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  position: absolute;
+  right: 0;
+  margin: 40px;
+  top: 0;
+  width: 400px;
+
+  font-family: Roboto Mono;
+  font-size: 30px;
+}
+#submit-options-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.options { 
+  flex: 1; 
+  text-align: center;
+  padding: 10px 30px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: .2s;
+}
+#join {
+  color: #FFA825;
+  border-color: #FFA825;
+}
+#join:hover {
+  color: #fff;
+  background-color: #FFA825;
+}
+#create:hover {
+  color: #fff;
+  background-color: #000;
+}
+#username {
+  width: 100%;
+  font-family: Roboto Mono;
+  border: 1px solid #8E8E8E;
+  font-size: 30px;
+  text-align: center;
+  padding: 10px 0;
+  background-color: rgba(0,0,0,0);
+}
+#error {
+  color: #ff0000;
+  font-size: 20px;
+  word-break: break-word;
+}
+
+#fish-throw {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.fish { 
+  position: absolute; 
+  aspect-ratio: 1 / 1;
+  user-select: none;
+}

@@ -1,0 +1,123 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#user-info {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin: 30px;
+  font-size: 20px;
+  font-family: Roboto Mono;
+}
+#username, #game-id { font-weight: bold; }
+
+#players-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 30px;
+  font-family: Quattrocento;
+  font-size: 40px;
+  text-align: right;
+}
+#players {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+.player {
+  font-family: Roboto Mono; 
+  color: #707070;
+  font-size: 20px;
+}
+
+
+/* GAME */
+#game {
+  position: relative;
+  left: 0;
+  top: 0;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  width: 150%;
+  aspect-ratio: 1 / 1;
+}
+#gameboard {
+  position: absolute;
+  left: 0;
+  top: 0;
+  aspect-ratio: 1 / 1;
+  cursor: grab;
+  z-index: 0;
+  width: 100%;
+}
+#mice { z-index: 1; }
+.mouse-container {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  position: absolute;
+  user-select: none;
+}
+.mouse-username {
+  font-family: Roboto Mono;
+  color: #707070;
+}
+
+#sides div {
+  
+}
+
+#markers-display { /* markers display */
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+
+  z-index: 1;
+}
+.marker-display {
+  opacity: .5;
+  transition: .2s;
+}
+.marker-display:hover {
+  opacity: 1;
+  transform: rotate(-5deg) scale(1.1);
+}
+
+.component-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+.marker {
+  position: absolute;
+  width: 2%;
+  transform: translate(-50%, -50%);
+
+  pointer-events: auto;
+  cursor: move;
+}
+
+.card {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 7%;
+
+  pointer-events: auto;
+  cursor: move;
+}

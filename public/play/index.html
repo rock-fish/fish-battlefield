@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    
+    <title>Fish Battlefield</title>
+    <link rel="icon" href ="/images/icon.png">
+    <meta charset='utf-8'>
+    <link rel='stylesheet' type='text/css' href='/css/play/style.css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&family=Quattrocento:wght@400;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+  </head>
+  <body>
+    <div id="game">
+      
+      <img id="gameboard" src='/images/play/gameboard.svg' draggable="false"/>
+
+      <div id="sides">
+        <div id='1'>empty</div>
+        <div id='2'>empty</div>
+        <div id='3'>empty</div>
+        <div id='4'>empty</div>
+      </div>
+      <div id="mice"></div>
+
+      <div id='markers-display'>
+        <img src='/images/play/markers/minus1.svg' draggable='false' class='marker-display' id='marker-minus1'/>
+        <img src='/images/play/markers/5.svg' draggable='false' class='marker-display' id='marker-5'/>
+        <img src='/images/play/markers/10.svg' draggable='false' class='marker-display' id='marker-10'/>
+        <img src='/images/play/markers/20.svg' draggable='false' class='marker-display' id='marker-20'>
+        <img src='/images/play/markers/30.svg' draggable='false' class='marker-display' id='marker-30'/>
+        <img src='/images/play/markers/40.svg' draggable='false' class='marker-display' id='marker-40'/>
+        <img src='/images/play/markers/50.svg' draggable='false' class='marker-display' id='marker-50'/>
+      </div>
+
+      <div id="cards" class="component-container"></div>
+      
+      <div id='markers' class="component-container"></div>
+    </div>
+
+    <div id="user-info">
+      Game ID: <span id='game-id'>000000</span><br><br>
+      Playing as <span id='username'></span>
+    </div>
+
+    <div id="players-container">
+      Players<br>
+      <div id="players"></div>
+    </div>
+
+    <p style="position: fixed; right: 0; bottom: 0; text-align: right; font-family: Roboto Mono; color: #6D6D6D; margin: 10px;">Leaving this page in any way will kick you from the game and require you to enter the code again!</p>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script> const socket = io(); </script>
+    <script src='/js/play/script.js'></script>
+    <script src='/js/play/game.js'></script>
+    
+  </body>
+</html>
